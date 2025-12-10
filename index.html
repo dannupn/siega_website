@@ -1,63 +1,1308 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="id" class="scroll-smooth">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>SIEGA - Sistem Informasi</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <title>SIEGA - Unika Soegijapranata</title>
+    <meta name="description" content="Sistem Informasi, E-Commerce, Game Technology, dan Akuntansi SI Unika Soegijapranata. Inovasi digital dimulai dari sini." />
+
+    <!-- Open Graph / Facebook / WhatsApp Preview -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://siega.unika.ac.id/" />
+    <meta property="og:title" content="SIEGA - Unika Soegijapranata" />
+    <meta property="og:description" content="Bergabunglah dengan program studi Sistem Informasi & Game Technology. Cetak prestasi, bangun karir global." />
+    <meta property="og:image" content="https://images.unsplash.com/photo-1531482615713-2afd69097998?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80" />
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta property="twitter:url" content="https://siega.unika.ac.id/" />
+    <meta property="twitter:title" content="SIEGA - Unika Soegijapranata" />
+    <meta property="twitter:description" content="Bergabunglah dengan program studi Sistem Informasi & Game Technology. Cetak prestasi, bangun karir global." />
+    <meta property="twitter:image" content="https://images.unsplash.com/photo-1531482615713-2afd69097998?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80" />
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+
+    <script>
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            fontFamily: {
+              sans: ["Poppins", "sans-serif"],
+            },
+            colors: {
+              siega: {
+                dark: "#1e1b4b", // Indigo 950
+                primary: "#4338ca", // Indigo 700
+                accent: "#f59e0b", // Amber 500
+                light: "#e0e7ff", // Indigo 100
+              },
+            },
+          },
+        },
+      };
+    </script>
+
     <style>
-      /* Custom CSS Sederhana */
-      .hero-section {
-        background: #004085;
-        color: white;
-        padding: 100px 0;
+      .glass-nav {
+        background: rgba(255, 255, 255, 0.9);
+        backdrop-filter: blur(10px);
+        border-bottom: 1px solid rgba(0, 0, 0, 0.05);
       }
-      .footer {
-        background: #343a40;
-        color: white;
-        padding: 30px 0;
+
+      .dark .glass-nav {
+        background: rgba(17, 24, 39, 0.9);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+      }
+
+      .hero-gradient {
+        background: linear-gradient(135deg, #1e1b4b 0%, #4338ca 100%);
+      }
+
+      .card-hover {
+        transition: all 0.3s ease;
+      }
+      .card-hover:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+      }
+
+      .fade-in-section {
+        opacity: 0;
+        transform: translateY(20px);
+        transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        will-change: opacity, visibility;
+      }
+      .fade-in-section.is-visible {
+        opacity: 1;
+        transform: none;
+      }
+
+      .no-scrollbar::-webkit-scrollbar {
+        display: none;
+      }
+      .no-scrollbar {
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+      }
+
+      .nav-active {
+        color: #f59e0b !important;
+        font-weight: 700;
+        position: relative;
+      }
+
+      .nav-active::after {
+        content: "";
+        position: absolute;
+        bottom: -4px;
+        left: 0;
+        width: 100%;
+        height: 2px;
+        background-color: #f59e0b;
+        border-radius: 2px;
+      }
+
+      #toast {
+        visibility: hidden;
+        min-width: 250px;
+        background-color: #10b981;
+        color: #fff;
+        text-align: center;
+        border-radius: 8px;
+        padding: 16px;
+        position: fixed;
+        z-index: 100;
+        left: 50%;
+        bottom: 30px;
+        transform: translateX(-50%);
+        font-size: 17px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        opacity: 0;
+        transition: opacity 0.5s, bottom 0.5s;
+      }
+
+      #toast.show {
+        visibility: visible;
+        opacity: 1;
+        bottom: 50px;
       }
     </style>
   </head>
-  <body>
-    <nav class="navbar navbar-expand-lg navbar-dark bg-primary fixed-top">
-      <div class="container">
-        <a class="navbar-brand fw-bold" href="#">SIEGA UNIKA</a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-          <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
-          <ul class="navbar-nav ms-auto">
-            <li class="nav-item"><a class="nav-link" href="#">Home</a></li>
-            <li class="nav-item"><a class="nav-link" href="#profil">Profil</a></li>
-            <li class="nav-item"><a class="nav-link" href="#berita">Berita</a></li>
-          </ul>
+  <body class="font-sans text-gray-700 antialiased overflow-x-hidden bg-gray-50 dark:bg-gray-900 dark:text-gray-100 transition-colors duration-300">
+    <!-- Navigation -->
+    <nav id="navbar" class="fixed w-full z-50 transition-all duration-300 py-4 bg-transparent text-white">
+      <div class="container mx-auto px-6 flex justify-between items-center">
+        <!-- Logo -->
+        <a href="#" onclick="showHome()" class="flex items-center gap-2 group">
+          <div class="bg-white text-siega-primary w-10 h-10 rounded-lg flex items-center justify-center font-bold text-xl shadow-lg group-hover:scale-110 transition-transform">S</div>
+          <div class="flex flex-col">
+            <span class="text-xl font-bold tracking-wide group-hover:text-siega-accent transition-colors">SIEGA</span>
+            <span class="text-xs uppercase tracking-wider opacity-80">Unika Soegijapranata</span>
+          </div>
+        </a>
+
+        <!-- Desktop Menu -->
+        <div class="hidden md:flex items-center space-x-8 font-medium">
+          <a href="#beranda" onclick="showHome()" class="nav-link hover:text-siega-accent transition-colors relative" data-i18n="nav_home">Beranda</a>
+          <a href="#tentang" onclick="showHome()" class="nav-link hover:text-siega-accent transition-colors relative" data-i18n="nav_about">Tentang Kami</a>
+          <a href="#perkuliahan" onclick="showHome()" class="nav-link hover:text-siega-accent transition-colors relative" data-i18n="nav_programs">Perkuliahan</a>
+          <a href="#dosen" onclick="showHome()" class="nav-link hover:text-siega-accent transition-colors relative" data-i18n="nav_lecturers">Dosen</a>
+          <a href="#kontak" onclick="showHome()" class="nav-link hover:text-siega-accent transition-colors relative" data-i18n="nav_contact">Kontak</a>
+
+          <!-- Theme Toggle Button (Desktop) -->
+          <button id="theme-toggle" aria-label="Toggle Dark Mode" class="p-2 rounded-full hover:bg-white/20 transition focus:outline-none" title="Toggle Dark Mode">
+            <i class="fas fa-moon" id="theme-icon"></i>
+          </button>
+
+          <!-- Language Toggle Button (Desktop) -->
+          <button id="lang-toggle" class="font-bold text-sm bg-white/10 hover:bg-white/20 px-3 py-1 rounded transition border border-white/30" title="Switch Language">ID</button>
+
+          <a href="#daftar" class="bg-siega-accent text-white px-5 py-2 rounded-full hover:bg-yellow-600 transition shadow-lg transform hover:scale-105" data-i18n="nav_register">Daftar Sekarang</a>
+        </div>
+
+        <!-- Mobile Menu Button -->
+        <div class="flex items-center md:hidden gap-3">
+          <!-- Language Toggle Button (Mobile) -->
+          <button id="lang-toggle-mobile" class="font-bold text-xs bg-white/10 hover:bg-white/20 px-2 py-1 rounded transition border border-white/30">ID</button>
+          <!-- Theme Toggle Button (Mobile) -->
+          <button id="theme-toggle-mobile" aria-label="Toggle Dark Mode" class="p-2 rounded-full hover:bg-white/20 transition focus:outline-none">
+            <i class="fas fa-moon" id="theme-icon-mobile"></i>
+          </button>
+          <button id="mobile-menu-btn" aria-label="Open Menu" class="focus:outline-none text-2xl">
+            <i class="fas fa-bars"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- Mobile Menu Dropdown -->
+      <div id="mobile-menu" class="hidden md:hidden bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-100 absolute w-full left-0 top-full shadow-lg border-t dark:border-gray-700">
+        <div class="flex flex-col p-6 space-y-4 font-medium">
+          <a href="#beranda" onclick="showHome()" class="hover:text-siega-primary dark:hover:text-siega-accent" data-i18n="nav_home">Beranda</a>
+          <a href="#tentang" onclick="showHome()" class="hover:text-siega-primary dark:hover:text-siega-accent" data-i18n="nav_about">Tentang Kami</a>
+          <a href="#perkuliahan" onclick="showHome()" class="hover:text-siega-primary dark:hover:text-siega-accent" data-i18n="nav_programs">Perkuliahan</a>
+          <a href="#dosen" onclick="showHome()" class="hover:text-siega-primary dark:hover:text-siega-accent" data-i18n="nav_lecturers">Dosen</a>
+          <a href="#kontak" onclick="showHome()" class="hover:text-siega-primary dark:hover:text-siega-accent" data-i18n="nav_contact">Kontak</a>
+          <a href="#daftar" class="text-siega-primary dark:text-siega-accent font-bold" data-i18n="nav_register">Daftar Sekarang</a>
         </div>
       </div>
     </nav>
 
-    <section id="area-person-1">
-      <div class="container py-5 text-center">
-        <p class="text-muted">... Area ini akan diisi oleh Person 1 ...</p>
-      </div>
-    </section>
+    <!-- Toast Notification Element -->
+    <div id="toast"><i class="fas fa-check-circle mr-2"></i> <span id="toast-msg">Pesan berhasil dikirim!</span></div>
 
-    <section id="berita" class="py-5 bg-light">
-    <div class="container">
-      <iframe src="berita.html" width="100%" height="600px" style="border:none; overflow:hidden;" title="Berita Terkini"></iframe>
+    <!-- MAIN HOME VIEW WRAPPER -->
+    <div id="home-view" class="transition-opacity duration-300">
+      <!-- Hero Section -->
+      <section id="beranda" class="relative min-h-screen flex items-center pt-20 hero-gradient overflow-hidden section-spy">
+        <!-- Background Decor -->
+        <div class="absolute top-0 right-0 w-1/2 h-full opacity-20 hidden md:block">
+          <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" class="w-full h-full">
+            <path
+              fill="#F59E0B"
+              d="M44.7,-76.4C58.9,-69.2,71.8,-59.1,81.6,-46.6C91.4,-34.1,98.1,-19.2,95.8,-4.8C93.5,9.6,82.2,23.5,70.9,35.1C59.6,46.7,48.3,56,36.1,63.9C23.9,71.8,10.8,78.3,-1.9,81.6C-14.6,84.9,-27.9,85,-40.4,79.5C-52.9,74,-64.6,62.9,-73.4,49.7C-82.2,36.5,-88.1,21.2,-87.3,6.2C-86.5,-8.8,-79,-23.5,-68.8,-35.3C-58.6,-47.1,-45.7,-56,-32.7,-63.9C-19.7,-71.8,-6.6,-78.7,4.5,-86.5L15.6,-94.3"
+              transform="translate(100 100)"
+            />
+          </svg>
+        </div>
+
+        <div class="container mx-auto px-6 relative z-10 grid md:grid-cols-2 gap-12 items-center">
+          <div class="text-white space-y-6 fade-in-section">
+            <div class="inline-block px-4 py-1 rounded-full bg-white/10 backdrop-blur-sm border border-white/20 text-sm font-semibold tracking-wide text-siega-accent">THE FUTURE IS HERE</div>
+            <h1 class="text-5xl md:text-6xl font-extrabold leading-tight">
+              <span data-i18n="hero_title_1">Inovasi</span> <span class="text-siega-accent">Digital</span><br />
+              <span data-i18n="hero_title_2">Mulai Dari Sini.</span>
+            </h1>
+            <p class="text-lg text-gray-200 leading-relaxed max-w-lg" data-i18n="hero_desc">Bergabunglah dengan keluarga besar SIEGA Unika Soegijapranata. Cetak prestasi, bangun karir global di era digital.</p>
+            <div class="flex flex-col sm:flex-row gap-4 pt-4">
+              <a href="#perkuliahan" class="px-8 py-4 bg-white text-siega-primary font-bold rounded-lg shadow-lg hover:bg-gray-100 transition transform hover:-translate-y-1 text-center" data-i18n="hero_cta_1"> Jelajahi Prodi </a>
+            </div>
+
+            <!-- Stats -->
+            <div class="grid grid-cols-3 gap-6 pt-8 border-t border-white/20 mt-8">
+              <div>
+                <h3 class="text-3xl font-bold text-siega-accent">A</h3>
+                <p class="text-sm text-gray-300" data-i18n="stat_accreditation">Akreditasi</p>
+              </div>
+              <div>
+                <h3 class="text-3xl font-bold text-siega-accent">4</h3>
+                <p class="text-sm text-gray-300" data-i18n="stat_concentration">Konsentrasi</p>
+              </div>
+              <div>
+                <h3 class="text-3xl font-bold text-siega-accent">100%</h3>
+                <p class="text-sm text-gray-300" data-i18n="stat_career">Dukungan Karir</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="relative hidden md:block fade-in-section">
+            <div class="relative z-10 rounded-2xl overflow-hidden shadow-2xl border-4 border-white/10 transform rotate-2 hover:rotate-0 transition duration-500">
+              <img src="https://images.unsplash.com/photo-1531482615713-2afd69097998?ixlib=rb-4.0.3&auto=format&fit=crop&w=1740&q=80" alt="Students Learning" class="w-full h-auto object-cover" />
+            </div>
+            <div class="absolute -bottom-10 -left-10 w-full h-full bg-siega-accent rounded-2xl -z-10 opacity-20"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Tentang Kami -->
+      <section id="tentang" class="py-24 bg-gray-50 dark:bg-gray-900 transition-colors section-spy">
+        <div class="container mx-auto px-6">
+          <div class="text-center mb-16 fade-in-section">
+            <h2 class="text-siega-primary dark:text-siega-accent font-bold tracking-widest uppercase text-sm mb-2" data-i18n="about_tag">Tentang SIEGA</h2>
+            <h3 class="text-4xl font-bold text-gray-900 dark:text-white" data-i18n="about_title">Mencetak Talenta Digital Unggul</h3>
+            <div class="w-24 h-1 bg-siega-accent mx-auto mt-4 rounded-full"></div>
+          </div>
+
+          <div class="grid md:grid-cols-2 gap-16 items-center">
+            <div class="order-2 md:order-1 fade-in-section">
+              <div class="grid grid-cols-2 gap-4">
+                <img src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" class="rounded-xl shadow-lg w-full h-48 object-cover" alt="Collaboration" />
+                <img src="https://images.unsplash.com/photo-1550751827-4bd374c3f58b?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" class="rounded-xl shadow-lg w-full h-48 object-cover mt-8" alt="Technology" />
+              </div>
+            </div>
+            <div class="order-1 md:order-2 space-y-6 fade-in-section">
+              <p class="text-lg text-gray-600 dark:text-gray-300 font-medium" data-i18n="about_desc_1">
+                SIEGA (Sistem Informasi, E-Commerce, Game Technology, dan Akuntansi + Sistem Informasi) adalah bagian integral dari Fakultas Ilmu Komputer Unika Soegijapranata yang berfokus pada inovasi teknologi masa depan.
+              </p>
+              <p class="text-gray-600 dark:text-gray-400" data-i18n="about_desc_2">
+                Kami tidak hanya mengajarkan coding, tetapi juga pola pikir analitis, kreativitas, dan kewirausahaan. Dengan 4 konsentrasi unggulan yang selalu diupdate sesuai kebutuhan industri, lulusan kami siap bersaing dan menjadi
+                pemimpin di kancah global.
+              </p>
+
+              <ul class="space-y-3 pt-4">
+                <li class="flex items-center text-gray-700 dark:text-gray-300"><i class="fas fa-check-circle text-siega-primary dark:text-siega-accent mr-3"></i> <span data-i18n="about_point_1">Kurikulum Berbasis Proyek (PBL)</span></li>
+                <li class="flex items-center text-gray-700 dark:text-gray-300"><i class="fas fa-check-circle text-siega-primary dark:text-siega-accent mr-3"></i> <span data-i18n="about_point_2">Dosen Praktisi & Akademisi</span></li>
+                <li class="flex items-center text-gray-700 dark:text-gray-300"><i class="fas fa-check-circle text-siega-primary dark:text-siega-accent mr-3"></i> <span data-i18n="about_point_3">Fasilitas Lab Modern & Immersive</span></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Perkuliahan / Konsentrasi -->
+      <section id="perkuliahan" class="py-24 bg-white dark:bg-gray-800 relative transition-colors section-spy">
+        <div class="container mx-auto px-6">
+          <div class="text-center mb-16 fade-in-section">
+            <h2 class="text-siega-primary dark:text-siega-accent font-bold tracking-widest uppercase text-sm mb-2" data-i18n="programs_tag">Program Studi</h2>
+            <h3 class="text-4xl font-bold text-gray-900 dark:text-white" data-i18n="programs_title">4 Konsentrasi Unggulan</h3>
+            <p class="mt-4 text-gray-600 dark:text-gray-400 max-w-2xl mx-auto" data-i18n="programs_desc">Kurikulum dirancang spesifik untuk menjawab tantangan industri digital masa kini.</p>
+          </div>
+
+          <div class="grid md:grid-cols-2 gap-8">
+            <!-- Card 1: Sistem Informasi -->
+            <div class="card-hover group bg-white dark:bg-gray-900 rounded-2xl shadow-xl overflow-hidden border border-gray-100 dark:border-gray-700 fade-in-section">
+              <div class="h-48 bg-blue-600 relative overflow-hidden">
+                <div class="absolute inset-0 bg-blue-900/50 group-hover:bg-blue-900/30 transition"></div>
+                <img
+                  src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+                  alt="Sistem Informasi"
+                  class="w-full h-full object-cover group-hover:scale-110 transition duration-500"
+                />
+                <div class="absolute bottom-4 left-6">
+                  <div class="bg-white text-blue-800 text-xs font-bold px-3 py-1 rounded mb-2 inline-block">BUSINESS INTELLIGENCE</div>
+                  <h4 class="text-2xl font-bold text-white" data-i18n="card_si_title">Sistem Informasi</h4>
+                </div>
+              </div>
+              <div class="p-8">
+                <p class="text-gray-600 dark:text-gray-300 mb-6 text-sm" data-i18n="card_si_desc">Menghasilkan lulusan yang mampu menganalisa, merancang, dan mengimplementasikan strategi bisnis berbasis teknologi informasi.</p>
+                <h5 class="font-bold text-blue-800 dark:text-blue-400 mb-3 text-sm uppercase tracking-wide" data-i18n="card_highlight">Highlight Kuliah:</h5>
+                <ul class="grid grid-cols-1 gap-2 text-sm text-gray-600 dark:text-gray-400 mb-8">
+                  <li class="flex items-start"><i class="fas fa-check text-blue-500 mt-1 mr-2 text-xs"></i> <span data-i18n="card_si_pt1">Kecerdasan Bisnis (BI)</span></li>
+                  <li class="flex items-start"><i class="fas fa-check text-blue-500 mt-1 mr-2 text-xs"></i> <span data-i18n="card_si_pt2">Audit Sistem Informasi</span></li>
+                  <li class="flex items-start"><i class="fas fa-check text-blue-500 mt-1 mr-2 text-xs"></i> <span data-i18n="card_si_pt3">Teknologi Immersive</span></li>
+                </ul>
+                <button
+                  onclick="showDetail('si')"
+                  class="block text-center w-full py-3 border-2 border-blue-600 text-blue-600 dark:text-blue-400 dark:border-blue-400 font-bold rounded-lg hover:bg-blue-600 dark:hover:bg-blue-600 hover:text-white dark:hover:text-white transition text-sm"
+                  data-i18n="btn_detail"
+                >
+                  Lihat Detail Kurikulum
+                </button>
+              </div>
+            </div>
+
+            <!-- Card 2: Game Technology -->
+            <div class="card-hover group bg-white dark:bg-gray-900 rounded-2xl shadow-xl overflow-hidden border border-gray-100 dark:border-gray-700 fade-in-section" style="transition-delay: 100ms">
+              <div class="h-48 bg-purple-600 relative overflow-hidden">
+                <div class="absolute inset-0 bg-purple-900/50 group-hover:bg-purple-900/30 transition"></div>
+                <img src="https://images.unsplash.com/photo-1552820728-8b83bb6b773f?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Game Technology" class="w-full h-full object-cover group-hover:scale-110 transition duration-500" />
+                <div class="absolute bottom-4 left-6">
+                  <div class="bg-white text-purple-800 text-xs font-bold px-3 py-1 rounded mb-2 inline-block">GAMIFICATION & AR/VR</div>
+                  <h4 class="text-2xl font-bold text-white" data-i18n="card_game_title">Game Technology</h4>
+                </div>
+              </div>
+              <div class="p-8">
+                <p class="text-gray-600 dark:text-gray-300 mb-6 text-sm" data-i18n="card_game_desc">Fokus pada pengembangan teknologi permainan interaktif, simulasi, Virtual Reality, dan Augmented Reality yang inovatif.</p>
+                <h5 class="font-bold text-purple-800 dark:text-purple-400 mb-3 text-sm uppercase tracking-wide" data-i18n="card_highlight">Highlight Kuliah:</h5>
+                <ul class="grid grid-cols-1 gap-2 text-sm text-gray-600 dark:text-gray-400 mb-8">
+                  <li class="flex items-start"><i class="fas fa-check text-purple-500 mt-1 mr-2 text-xs"></i> <span data-i18n="card_game_pt1">Animasi 2D & 3D</span></li>
+                  <li class="flex items-start"><i class="fas fa-check text-purple-500 mt-1 mr-2 text-xs"></i> <span data-i18n="card_game_pt2">Kecerdasan Buatan (AI)</span></li>
+                  <li class="flex items-start"><i class="fas fa-check text-purple-500 mt-1 mr-2 text-xs"></i> <span data-i18n="card_game_pt3">AR & VR</span></li>
+                </ul>
+                <button
+                  onclick="showDetail('game')"
+                  class="block text-center w-full py-3 border-2 border-purple-600 text-purple-600 dark:text-purple-400 dark:border-purple-400 font-bold rounded-lg hover:bg-purple-600 dark:hover:bg-purple-600 hover:text-white dark:hover:text-white transition text-sm"
+                  data-i18n="btn_detail"
+                >
+                  Lihat Detail Kurikulum
+                </button>
+              </div>
+            </div>
+
+            <!-- Card 3: E-Commerce -->
+            <div class="card-hover group bg-white dark:bg-gray-900 rounded-2xl shadow-xl overflow-hidden border border-gray-100 dark:border-gray-700 fade-in-section" style="transition-delay: 200ms">
+              <div class="h-48 bg-orange-500 relative overflow-hidden">
+                <div class="absolute inset-0 bg-orange-800/50 group-hover:bg-orange-800/30 transition"></div>
+                <img
+                  src="https://images.unsplash.com/photo-1556740758-90de374c12ad?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+                  alt="E-Commerce & Digital Payment"
+                  class="w-full h-full object-cover group-hover:scale-110 transition duration-500"
+                />
+                <div class="absolute bottom-4 left-6">
+                  <div class="bg-white text-orange-700 text-xs font-bold px-3 py-1 rounded mb-2 inline-block">DIGITAL BUSINESS</div>
+                  <h4 class="text-2xl font-bold text-white" data-i18n="card_ecom_title">E-Commerce</h4>
+                </div>
+              </div>
+              <div class="p-8">
+                <p class="text-gray-600 dark:text-gray-300 mb-6 text-sm" data-i18n="card_ecom_desc">Mencetak wirausahawan digital yang menguasai teknologi finansial, pemasaran digital, dan manajemen bisnis online global.</p>
+                <h5 class="font-bold text-orange-700 dark:text-orange-400 mb-3 text-sm uppercase tracking-wide" data-i18n="card_highlight">Highlight Kuliah:</h5>
+                <ul class="grid grid-cols-1 gap-2 text-sm text-gray-600 dark:text-gray-400 mb-8">
+                  <li class="flex items-start"><i class="fas fa-check text-orange-500 mt-1 mr-2 text-xs"></i> <span data-i18n="card_ecom_pt1">Hukum Cyber</span></li>
+                  <li class="flex items-start"><i class="fas fa-check text-orange-500 mt-1 mr-2 text-xs"></i> <span data-i18n="card_ecom_pt2">Fintech</span></li>
+                  <li class="flex items-start"><i class="fas fa-check text-orange-500 mt-1 mr-2 text-xs"></i> <span data-i18n="card_ecom_pt3">Metaverse & E-Marketplace</span></li>
+                </ul>
+                <button
+                  onclick="showDetail('ecommerce')"
+                  class="block text-center w-full py-3 border-2 border-orange-500 text-orange-500 dark:text-orange-400 dark:border-orange-400 font-bold rounded-lg hover:bg-orange-500 dark:hover:bg-orange-500 hover:text-white dark:hover:text-white transition text-sm"
+                  data-i18n="btn_detail"
+                >
+                  Lihat Detail Kurikulum
+                </button>
+              </div>
+            </div>
+
+            <!-- Card 4: Akuntansi + Sistem Informasi -->
+            <div class="card-hover group bg-white dark:bg-gray-900 rounded-2xl shadow-xl overflow-hidden border border-gray-100 dark:border-gray-700 fade-in-section" style="transition-delay: 300ms">
+              <div class="h-48 bg-emerald-600 relative overflow-hidden">
+                <div class="absolute inset-0 bg-emerald-900/50 group-hover:bg-emerald-900/30 transition"></div>
+                <img src="https://images.unsplash.com/photo-1554224155-6726b3ff858f?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Akuntansi + SI" class="w-full h-full object-cover group-hover:scale-110 transition duration-500" />
+                <div class="absolute bottom-4 left-6">
+                  <div class="bg-white text-emerald-800 text-xs font-bold px-3 py-1 rounded mb-2 inline-block">FINANCIAL TECH</div>
+                  <h4 class="text-2xl font-bold text-white" data-i18n="card_akuntansi_title">Akuntansi + SI</h4>
+                </div>
+              </div>
+              <div class="p-8">
+                <p class="text-gray-600 dark:text-gray-300 mb-6 text-sm" data-i18n="card_akuntansi_desc">Program ganda yang menggabungkan keahlian akuntansi keuangan dengan kemampuan teknis sistem informasi audit dan manajemen data.</p>
+                <h5 class="font-bold text-emerald-800 dark:text-emerald-400 mb-3 text-sm uppercase tracking-wide" data-i18n="card_highlight">Highlight Kuliah:</h5>
+                <ul class="grid grid-cols-1 gap-2 text-sm text-gray-600 dark:text-gray-400 mb-8">
+                  <li class="flex items-start"><i class="fas fa-check text-emerald-500 mt-1 mr-2 text-xs"></i> <span data-i18n="card_akuntansi_pt1">SI Akuntansi</span></li>
+                  <li class="flex items-start"><i class="fas fa-check text-emerald-500 mt-1 mr-2 text-xs"></i> <span data-i18n="card_akuntansi_pt2">Audit Teknologi Informasi</span></li>
+                  <li class="flex items-start"><i class="fas fa-check text-emerald-500 mt-1 mr-2 text-xs"></i> <span data-i18n="card_akuntansi_pt3">Komputerisasi Akuntansi</span></li>
+                </ul>
+                <button
+                  onclick="showDetail('akuntansi')"
+                  class="block text-center w-full py-3 border-2 border-emerald-600 text-emerald-600 dark:text-emerald-400 dark:border-emerald-400 font-bold rounded-lg hover:bg-emerald-600 dark:hover:bg-emerald-600 hover:text-white dark:hover:text-white transition text-sm"
+                  data-i18n="btn_detail"
+                >
+                  Lihat Detail Kurikulum
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Dosen Section (NEW) -->
+      <section id="dosen" class="py-24 bg-gray-50 dark:bg-gray-900 transition-colors section-spy">
+        <div class="container mx-auto px-6">
+          <div class="text-center mb-16 fade-in-section">
+            <h2 class="text-siega-primary dark:text-siega-accent font-bold tracking-widest uppercase text-sm mb-2" data-i18n="lecturers_tag">Pengajar Kami</h2>
+            <h3 class="text-4xl font-bold text-gray-900 dark:text-white" data-i18n="lecturers_title">Dosen & Praktisi Ahli</h3>
+            <p class="mt-4 text-gray-600 dark:text-gray-400 max-w-2xl mx-auto" data-i18n="lecturers_desc">Belajar langsung dari para ahli yang berpengalaman di bidang akademik dan industri.</p>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
+            <!-- Dosen 1 -->
+            <div class="group bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden fade-in-section hover:-translate-y-2 transition duration-300">
+              <div class="h-80 bg-gray-200 dark:bg-gray-700 relative overflow-hidden flex items-center justify-center">
+                <img src="assets/profridwan.jpg" onerror="this.src='https://ui-avatars.com/api/?name=Dosen+1&background=random&size=256'" alt="Dosen 1" class="w-full h-full object-cover group-hover:scale-105 transition duration-500" />
+              </div>
+              <div class="p-6 text-center">
+                <h4 class="font-bold text-lg text-gray-800 dark:text-white mb-1">Prof. Dr. Ridwan Sanjaya S.E., S.Kom., MS.IEC.</h4>
+                <p class="text-siega-primary dark:text-siega-accent text-sm font-medium mb-3">Dekan Fakultas Ilmu Komputer</p>
+                <div class="flex justify-center space-x-3 text-gray-400">
+                  <a href="#" class="hover:text-siega-primary transition"><i class="fab fa-linkedin"></i></a>
+                  <a href="#" class="hover:text-siega-primary transition"><i class="fas fa-envelope"></i></a>
+                </div>
+              </div>
+            </div>
+
+            <!-- Dosen 2 -->
+            <div class="group bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden fade-in-section hover:-translate-y-2 transition duration-300">
+              <div class="h-80 bg-gray-200 dark:bg-gray-700 relative overflow-hidden flex items-center justify-center">
+                <img src="assets/profberdi.jpg" onerror="this.src='https://ui-avatars.com/api/?name=Dosen+2&background=random&size=256'" alt="Dosen 2" class="w-full h-full object-cover group-hover:scale-105 transition duration-500" />
+              </div>
+              <div class="p-6 text-center">
+                <h4 class="font-bold text-lg text-gray-800 dark:text-white mb-1">Dr. Bernadinus Harnadi S.T., M.T.</h4>
+                <p class="text-siega-primary dark:text-siega-accent text-sm font-medium mb-3">Wakil Dekan Fakultas Ilmu Komputer</p>
+                <div class="flex justify-center space-x-3 text-gray-400">
+                  <a href="#" class="hover:text-siega-primary transition"><i class="fab fa-linkedin"></i></a>
+                  <a href="#" class="hover:text-siega-primary transition"><i class="fas fa-envelope"></i></a>
+                </div>
+              </div>
+            </div>
+
+            <!-- Dosen 3 -->
+            <div class="group bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden fade-in-section hover:-translate-y-2 transition duration-300">
+              <div class="h-80 bg-gray-200 dark:bg-gray-700 relative overflow-hidden flex items-center justify-center">
+                <img src="assets/pakyoga.jpg" onerror="this.src='https://ui-avatars.com/api/?name=Dosen+3&background=random&size=256'" alt="Dosen 3" class="w-full h-full object-cover group-hover:scale-105 transition duration-500" />
+              </div>
+              <div class="p-6 text-center">
+                <h4 class="font-bold text-lg text-gray-800 dark:text-white mb-1">Dr. Albertus Dwiyoga Widiantoro S.Kom., M.Kom.</h4>
+                <p class="text-siega-primary dark:text-siega-accent text-sm font-medium mb-3">Ketua Program Studi Sistem Informasi</p>
+                <div class="flex justify-center space-x-3 text-gray-400">
+                  <a href="#" class="hover:text-siega-primary transition"><i class="fab fa-linkedin"></i></a>
+                  <a href="#" class="hover:text-siega-primary transition"><i class="fas fa-envelope"></i></a>
+                </div>
+              </div>
+            </div>
+
+            <!-- Dosen 4 -->
+            <div class="group bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden fade-in-section hover:-translate-y-2 transition duration-300">
+              <div class="h-80 bg-gray-200 dark:bg-gray-700 relative overflow-hidden flex items-center justify-center">
+                <img src="assets/pakandre.jpg" onerror="this.src='https://ui-avatars.com/api/?name=Dosen+4&background=random&size=256'" alt="Dosen 4" class="w-full h-full object-cover group-hover:scale-105 transition duration-500" />
+              </div>
+              <div class="p-6 text-center">
+                <h4 class="font-bold text-lg text-gray-800 dark:text-white mb-1">Andre Kurniawan Pamudji S.Kom., M.Ling.</h4>
+                <p class="text-siega-primary dark:text-siega-accent text-sm font-medium mb-3">Sekretaris Program Studi Sistem Informasi</p>
+                <div class="flex justify-center space-x-3 text-gray-400">
+                  <a href="#" class="hover:text-siega-primary transition"><i class="fab fa-linkedin"></i></a>
+                  <a href="#" class="hover:text-siega-primary transition"><i class="fas fa-envelope"></i></a>
+                </div>
+              </div>
+            </div>
+
+            <!-- Dosen 5 -->
+            <div class="group bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden fade-in-section hover:-translate-y-2 transition duration-300">
+              <div class="h-80 bg-gray-200 dark:bg-gray-700 relative overflow-hidden flex items-center justify-center">
+                <img src="assets/bustep.jpg" onerror="this.src='https://ui-avatars.com/api/?name=Dosen+5&background=random&size=256'" alt="Dosen 5" class="w-full h-full object-cover group-hover:scale-105 transition duration-500" />
+              </div>
+              <div class="p-6 text-center">
+                <h4 class="font-bold text-lg text-gray-800 dark:text-white mb-1">Stephani Inggrit Swastini, S.Kom, MBA </h4>
+                <p class="text-siega-primary dark:text-siega-accent text-sm font-medium mb-3">Ka. Lab Sistem Informasi</p>
+                <div class="flex justify-center space-x-3 text-gray-400">
+                  <a href="#" class="hover:text-siega-primary transition"><i class="fab fa-linkedin"></i></a>
+                  <a href="#" class="hover:text-siega-primary transition"><i class="fas fa-envelope"></i></a>
+                </div>
+              </div>
+            </div>
+
+            <!-- Dosen 6 -->
+            <div class="group bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden fade-in-section hover:-translate-y-2 transition duration-300">
+              <div class="h-80 bg-gray-200 dark:bg-gray-700 relative overflow-hidden flex items-center justify-center">
+                <img src="assets/pakcahyo.jpg" onerror="this.src='https://ui-avatars.com/api/?name=Dosen+6&background=random&size=256'" alt="Dosen 6" class="w-full h-full object-cover group-hover:scale-105 transition duration-500" />
+              </div>
+              <div class="p-6 text-center">
+                <h4 class="font-bold text-lg text-gray-800 dark:text-white mb-1">Agus Cahyo Nugroho S.Kom., M.T.</h4>
+                <p class="text-siega-primary dark:text-siega-accent text-sm font-medium mb-3">Dosen Sistem Informasi</p>
+                <div class="flex justify-center space-x-3 text-gray-400">
+                  <a href="#" class="hover:text-siega-primary transition"><i class="fab fa-linkedin"></i></a>
+                  <a href="#" class="hover:text-siega-primary transition"><i class="fas fa-envelope"></i></a>
+                </div>
+              </div>
+            </div>
+
+            <!-- Dosen 7 -->
+            <div class="group bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden fade-in-section hover:-translate-y-2 transition duration-300">
+              <div class="h-80 bg-gray-200 dark:bg-gray-700 relative overflow-hidden flex items-center justify-center">
+                <img src="assets/pakerdi.jpg" onerror="this.src='https://ui-avatars.com/api/?name=Dosen+7&background=random&size=256'" alt="Dosen 7" class="w-full h-full object-cover group-hover:scale-105 transition duration-500" />
+              </div>
+              <div class="p-6 text-center">
+                <h4 class="font-bold text-lg text-gray-800 dark:text-white mb-1">Erdhi Widyarto Nugroho S.T., M.T.</h4>
+                <p class="text-siega-primary dark:text-siega-accent text-sm font-medium mb-3">Dosen Sistem Informasi</p>
+                <div class="flex justify-center space-x-3 text-gray-400">
+                  <a href="#" class="hover:text-siega-primary transition"><i class="fab fa-linkedin"></i></a>
+                  <a href="#" class="hover:text-siega-primary transition"><i class="fas fa-envelope"></i></a>
+                </div>
+              </div>
+            </div>
+
+            <!-- Dosen 8 -->
+            <div class="group bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden fade-in-section hover:-translate-y-2 transition duration-300">
+              <div class="h-80 bg-gray-200 dark:bg-gray-700 relative overflow-hidden flex items-center justify-center">
+                <img src="assets/bubrenda.jpg" onerror="this.src='https://ui-avatars.com/api/?name=Dosen+8&background=random&size=256'" alt="Dosen 8" class="w-full h-full object-cover group-hover:scale-105 transition duration-500" />
+              </div>
+              <div class="p-6 text-center">
+                <h4 class="font-bold text-lg text-gray-800 dark:text-white mb-1">Dr. T. Brenda Ch S.T., M.T.</h4>
+                <p class="text-siega-primary dark:text-siega-accent text-sm font-medium mb-3">Dosen Sistem Informasi</p>
+                <div class="flex justify-center space-x-3 text-gray-400">
+                  <a href="#" class="hover:text-siega-primary transition"><i class="fab fa-linkedin"></i></a>
+                  <a href="#" class="hover:text-siega-primary transition"><i class="fas fa-envelope"></i></a>
+                </div>
+              </div>
+            </div>
+
+            <!-- Dosen 9 -->
+            <div class="group bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden fade-in-section hover:-translate-y-2 transition duration-300">
+              <div class="h-80 bg-gray-200 dark:bg-gray-700 relative overflow-hidden flex items-center justify-center">
+                <img src="assets/pakhendra.jpg" onerror="this.src='https://ui-avatars.com/api/?name=Dosen+9&background=random&size=256'" alt="Dosen 9" class="w-full h-full object-cover group-hover:scale-105 transition duration-500" />
+              </div>
+              <div class="p-6 text-center">
+                <h4 class="font-bold text-lg text-gray-800 dark:text-white mb-1">Fx. Hendra Prasetya S.T., M.T.</h4>
+                <p class="text-siega-primary dark:text-siega-accent text-sm font-medium mb-3">Dosen Sistem Informasi</p>
+                <div class="flex justify-center space-x-3 text-gray-400">
+                  <a href="#" class="hover:text-siega-primary transition"><i class="fab fa-linkedin"></i></a>
+                  <a href="#" class="hover:text-siega-primary transition"><i class="fas fa-envelope"></i></a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Why Choose Us / CTA -->
+      <section class="py-20 bg-siega-dark text-white text-center relative overflow-hidden">
+        <div class="absolute top-0 left-0 w-full h-full opacity-10 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')]"></div>
+        <div class="container mx-auto px-6 relative z-10 fade-in-section">
+          <h2 class="text-3xl md:text-4xl font-bold mb-8" data-i18n="cta_title">Siap Menjadi Bagian dari Revolusi Digital?</h2>
+          <p class="text-gray-300 max-w-2xl mx-auto mb-10 text-lg" data-i18n="cta_desc">Jangan ragu untuk memulai langkahmu di Unika Soegijapranata. Konsultasikan minatmu sekarang juga.</p>
+          <div class="flex flex-col sm:flex-row justify-center gap-6">
+            <a href="#daftar" class="bg-siega-accent text-white px-8 py-4 rounded-full font-bold text-lg hover:bg-yellow-600 shadow-lg transform hover:scale-105 transition" data-i18n="cta_btn_primary">Daftar Mahasiswa Baru</a>
+            <a href="#kontak" class="bg-transparent border-2 border-white text-white px-8 py-4 rounded-full font-bold text-lg hover:bg-white hover:text-siega-dark transition" data-i18n="cta_btn_secondary">Hubungi Kami</a>
+          </div>
+        </div>
+      </section>
+
+      <!-- Kontak Kami -->
+      <section id="kontak" class="py-24 bg-gray-50 dark:bg-gray-900 transition-colors section-spy">
+        <div class="container mx-auto px-6">
+          <div class="grid md:grid-cols-2 gap-12 bg-white dark:bg-gray-800 rounded-3xl shadow-xl overflow-hidden fade-in-section">
+            <!-- Contact Info & Map -->
+            <div class="bg-siega-primary p-10 text-white flex flex-col justify-between">
+              <div>
+                <h3 class="text-3xl font-bold mb-6" data-i18n="contact_title">Kontak Kami</h3>
+                <p class="text-indigo-200 mb-8" data-i18n="contact_desc">Punya pertanyaan seputar pendaftaran, biaya, atau kurikulum? Tim kami siap membantu Anda.</p>
+
+                <div class="space-y-6">
+                  <div class="flex items-center">
+                    <div class="w-10 h-10 bg-indigo-600 rounded-full flex items-center justify-center mr-4">
+                      <i class="fas fa-map-marker-alt"></i>
+                    </div>
+                    <div>
+                      <h5 class="font-bold" data-i18n="contact_address">Alamat</h5>
+                      <p class="text-sm text-indigo-200">Jl. Pawiyatan Luhur IV/1, Bendan Duwur, Semarang, Jawa Tengah 50234</p>
+                    </div>
+                  </div>
+                  <div class="flex items-center">
+                    <div class="w-10 h-10 bg-indigo-600 rounded-full flex items-center justify-center mr-4">
+                      <i class="fas fa-envelope"></i>
+                    </div>
+                    <div>
+                      <h5 class="font-bold">Email</h5>
+                      <p class="text-sm text-indigo-200">si@unika.ac.id</p>
+                    </div>
+                  </div>
+                  <div class="flex items-center">
+                    <div class="w-10 h-10 bg-indigo-600 rounded-full flex items-center justify-center mr-4">
+                      <i class="fas fa-phone"></i>
+                    </div>
+                    <div>
+                      <h5 class="font-bold">WhatsApp</h5>
+                      <p class="text-sm text-indigo-200">+62-819-0338-5595</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Form -->
+            <div class="p-10">
+              <h3 class="text-2xl font-bold text-gray-800 dark:text-white mb-6" data-i18n="form_title">Kirim Pesan</h3>
+              <form id="contactForm">
+                <div class="grid md:grid-cols-2 gap-6 mb-6">
+                  <div>
+                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2" data-i18n="form_name">Nama Lengkap</label>
+                    <input
+                      type="text"
+                      required
+                      class="w-full px-4 py-3 rounded-lg bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 dark:text-white focus:border-siega-primary focus:ring-2 focus:ring-indigo-200 outline-none transition"
+                      placeholder="Nama Anda"
+                    />
+                  </div>
+                  <div>
+                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Email</label>
+                    <input
+                      type="email"
+                      required
+                      class="w-full px-4 py-3 rounded-lg bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 dark:text-white focus:border-siega-primary focus:ring-2 focus:ring-indigo-200 outline-none transition"
+                      placeholder="email@contoh.com"
+                    />
+                  </div>
+                </div>
+                <div class="mb-6">
+                  <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2" data-i18n="form_subject">Subjek</label>
+                  <select class="w-full px-4 py-3 rounded-lg bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 dark:text-white focus:border-siega-primary focus:ring-2 focus:ring-indigo-200 outline-none transition">
+                    <option data-i18n="form_opt_1">Pertanyaan Umum</option>
+                    <option data-i18n="form_opt_2">Info Pendaftaran</option>
+                    <option data-i18n="form_opt_3">Kerjasama</option>
+                  </select>
+                </div>
+                <div class="mb-6">
+                  <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2" data-i18n="form_msg">Pesan</label>
+                  <textarea
+                    rows="4"
+                    required
+                    class="w-full px-4 py-3 rounded-lg bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 dark:text-white focus:border-siega-primary focus:ring-2 focus:ring-indigo-200 outline-none transition"
+                    placeholder="..."
+                  ></textarea>
+                </div>
+                <button type="submit" class="w-full bg-siega-dark text-white font-bold py-4 rounded-lg hover:bg-siega-primary transition shadow-lg flex justify-center items-center">
+                  <span id="btnText" data-i18n="form_btn">Kirim Pesan</span>
+                  <i id="btnLoader" class="fas fa-spinner fa-spin hidden ml-2"></i>
+                </button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </section>
     </div>
-    </section>
 
-    <section id="dosen">
-      <iframe src="dosen.html" width="100%" height="600px" style="border:none; overflow:hidden;" title="Profil Dosen"></iframe>
-    </section>
+    <!-- DETAIL PAGE VIEW (Hidden by Default) -->
+    <div id="detail-view" class="hidden min-h-screen bg-gray-50 dark:bg-gray-900 pt-24 pb-12 transition-opacity duration-300">
+      <div class="container mx-auto px-6">
+        <!-- Back Button -->
+        <button onclick="showHome()" class="mb-8 flex items-center text-siega-primary dark:text-siega-accent font-bold hover:text-siega-accent transition group">
+          <div class="w-10 h-10 rounded-full bg-white dark:bg-gray-800 shadow-md flex items-center justify-center mr-3 group-hover:scale-110 transition">
+            <i class="fas fa-arrow-left"></i>
+          </div>
+          <span data-i18n="btn_back">Kembali ke Beranda</span>
+        </button>
 
-    <footer class="footer text-center mt-5">
-      <div class="container">
-        <p>&copy; 2025 SIEGA Project. Built with Bootstrap.</p>
+        <!-- Dynamic Header -->
+        <div id="detail-header" class="bg-white dark:bg-gray-800 rounded-3xl shadow-xl p-8 md:p-12 mb-12 flex flex-col md:flex-row items-center gap-8 relative overflow-hidden">
+          <div class="absolute top-0 right-0 w-64 h-64 bg-gray-100 dark:bg-gray-700 rounded-full -mr-32 -mt-32 opacity-50 z-0"></div>
+
+          <div class="flex-1 relative z-10">
+            <span id="detail-tag" class="text-xs font-bold tracking-widest px-3 py-1 rounded bg-blue-100 text-blue-800 uppercase mb-4 inline-block" data-i18n="modal_concentration">KONSENTRASI</span>
+            <h1 id="detail-title" class="text-4xl md:text-5xl font-extrabold text-gray-900 dark:text-white mb-4">Sistem Informasi</h1>
+            <p id="detail-desc" class="text-lg text-gray-600 dark:text-gray-300">Deskripsi singkat tentang jurusan ini akan muncul di sini.</p>
+          </div>
+          <div class="w-full md:w-1/3">
+            <img id="detail-image" src="" alt="Jurusan" class="rounded-xl shadow-lg w-full h-64 object-cover" />
+          </div>
+        </div>
+
+        <!-- Curriculum List -->
+        <div class="grid md:grid-cols-3 gap-8">
+          <div class="md:col-span-2">
+            <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-8">
+              <h3 class="text-2xl font-bold text-gray-800 dark:text-white mb-6 flex items-center"><i class="fas fa-book-open text-siega-accent mr-3"></i> <span data-i18n="modal_subjects">Mata Kuliah Konsentrasi</span></h3>
+              <div id="detail-subjects" class="grid sm:grid-cols-2 gap-4">
+                <!-- Subjects injected via JS -->
+              </div>
+            </div>
+
+            <div class="mt-8 bg-siega-dark rounded-2xl shadow-lg p-8 text-white relative overflow-hidden">
+              <div class="absolute top-0 right-0 w-32 h-32 bg-white opacity-5 rounded-full -mr-10 -mt-10"></div>
+              <h3 class="text-xl font-bold mb-4" data-i18n="modal_career">Prospek Karir</h3>
+              <p id="detail-career" class="text-gray-300 leading-relaxed">
+                <!-- Career text injected via JS -->
+              </p>
+            </div>
+          </div>
+
+          <!-- Sidebar Info -->
+          <div class="md:col-span-1 space-y-6">
+            <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-8 border-t-4 border-siega-primary">
+              <h4 class="font-bold text-gray-800 dark:text-white mb-4" data-i18n="sidebar_why">Kenapa Memilih Ini?</h4>
+              <ul class="space-y-3 text-sm text-gray-600 dark:text-gray-300">
+                <li class="flex items-start"><i class="fas fa-star text-yellow-400 mt-1 mr-2"></i> <span data-i18n="sidebar_point_1">Kurikulum Internasional</span></li>
+                <li class="flex items-start"><i class="fas fa-star text-yellow-400 mt-1 mr-2"></i> <span data-i18n="sidebar_point_2">Sertifikasi Profesi</span></li>
+                <li class="flex items-start"><i class="fas fa-star text-yellow-400 mt-1 mr-2"></i> <span data-i18n="sidebar_point_3">Magang di Perusahaan Top</span></li>
+              </ul>
+            </div>
+
+            <div class="bg-gray-100 dark:bg-gray-800 rounded-2xl p-8 text-center">
+              <h4 class="font-bold text-gray-800 dark:text-white mb-2" data-i18n="sidebar_cta_title">Tertarik Bergabung?</h4>
+              <p class="text-xs text-gray-500 dark:text-gray-400 mb-4" data-i18n="sidebar_cta_desc">Daftarkan dirimu segera dan dapatkan beasiswa potongan.</p>
+              <a href="#daftar" onclick="showHome()" class="block w-full py-3 bg-siega-accent text-white font-bold rounded-lg hover:bg-yellow-600 transition shadow" data-i18n="nav_register">Daftar Sekarang</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-gray-400 py-12 border-t border-gray-800">
+      <div class="container mx-auto px-6 text-center">
+        <div class="mb-6">
+          <span class="text-2xl font-bold text-white tracking-wider">SIEGA</span>
+          <span class="text-sm block mt-1" data-i18n="footer_subtitle">Program Studi Sistem Informasi</span>
+        </div>
+        <p class="text-sm mb-6">Fakultas Ilmu Komputer | Unika Soegijapranata Semarang | Phone: 0819-0338-5595 | Email: si@unika.ac.id</p>
+        <div class="flex justify-center space-x-6 text-sm">
+          <a href="#" class="hover:text-white transition">Privacy Policy</a>
+          <a href="#" class="hover:text-white transition">Copyright © 2025 SIEGA</a>
+          <a href="#" class="hover:text-white transition">PMB Unika</a>
+        </div>
       </div>
     </footer>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Floating Action Button (WA) -->
+    <a href="https://wa.me/" class="fixed bottom-6 right-6 bg-green-500 text-white w-14 h-14 rounded-full flex items-center justify-center shadow-lg hover:bg-green-600 transition z-50 animate-bounce">
+      <i class="fab fa-whatsapp text-3xl"></i>
+    </a>
+
+    <!-- Scripts -->
+    <script>
+      // --- TRANSLATION DICTIONARY ---
+      const translations = {
+        id: {
+          nav_home: "Beranda",
+          nav_about: "Tentang Kami",
+          nav_programs: "Perkuliahan",
+          nav_lecturers: "Dosen",
+          nav_contact: "Kontak",
+          nav_register: "Daftar Sekarang",
+          hero_title_1: "Inovasi",
+          hero_title_2: "Mulai Dari Sini.",
+          hero_desc: "Bergabunglah dengan keluarga besar SIEGA Unika Soegijapranata. Cetak prestasi, bangun karir global di era digital.",
+          hero_cta_1: "Jelajahi Prodi",
+          hero_cta_2: "Tanya Admin",
+          stat_accreditation: "Akreditasi",
+          stat_concentration: "Konsentrasi",
+          stat_career: "Dukungan Karir",
+          about_tag: "Tentang SIEGA",
+          about_title: "Mencetak Talenta Digital Unggul",
+          about_desc_1: "SIEGA (Sistem Informasi, E-Commerce, Game Technology, dan Akuntansi + Sistem Informasi) adalah bagian integral dari Fakultas Ilmu Komputer Unika Soegijapranata yang berfokus pada inovasi teknologi masa depan.",
+          about_desc_2:
+            "Kami tidak hanya mengajarkan coding, tetapi juga pola pikir analitis, kreativitas, dan kewirausahaan. Dengan 4 konsentrasi unggulan yang selalu diupdate sesuai kebutuhan industri, lulusan kami siap bersaing dan menjadi pemimpin di kancah global.",
+          about_point_1: "Kurikulum Berbasis Proyek (PBL)",
+          about_point_2: "Dosen Praktisi & Akademisi",
+          about_point_3: "Fasilitas Lab Modern & Immersive",
+          programs_tag: "Program Studi",
+          programs_title: "4 Konsentrasi Unggulan",
+          programs_desc: "Kurikulum dirancang spesifik untuk menjawab tantangan industri digital masa kini.",
+          lecturers_tag: "Pengajar Kami",
+          lecturers_title: "Dosen & Praktisi Ahli",
+          lecturers_desc: "Belajar langsung dari para ahli yang berpengalaman di bidang akademik dan industri.",
+          card_highlight: "Highlight Kuliah:",
+          btn_detail: "Lihat Detail Kurikulum",
+          // Card Titles & Desc hardcoded in HTML via data-i18n
+          card_si_title: "Sistem Informasi",
+          card_si_desc: "Menghasilkan lulusan yang mampu menganalisa, merancang, dan mengimplementasikan strategi bisnis berbasis teknologi informasi.",
+          card_si_pt1: "Kecerdasan Bisnis (BI)",
+          card_si_pt2: "Audit Sistem Informasi",
+          card_si_pt3: "Teknologi Immersive",
+          card_game_title: "Game Technology",
+          card_game_desc: "Fokus pada pengembangan teknologi permainan interaktif, simulasi, Virtual Reality, dan Augmented Reality yang inovatif.",
+          card_game_pt1: "Animasi 2D & 3D",
+          card_game_pt2: "Kecerdasan Buatan (AI)",
+          card_game_pt3: "AR & VR",
+          card_ecom_title: "E-Commerce",
+          card_ecom_desc: "Mencetak wirausahawan digital yang menguasai teknologi finansial, pemasaran digital, dan manajemen bisnis online global.",
+          card_ecom_pt1: "Hukum Cyber",
+          card_ecom_pt2: "Fintech",
+          card_ecom_pt3: "Metaverse & E-Marketplace",
+          card_akuntansi_title: "Akuntansi + SI",
+          card_akuntansi_desc: "Program ganda yang menggabungkan keahlian akuntansi keuangan dengan kemampuan teknis sistem informasi audit dan manajemen data.",
+          card_akuntansi_pt1: "SI Akuntansi",
+          card_akuntansi_pt2: "Audit Teknologi Informasi",
+          card_akuntansi_pt3: "Komputerisasi Akuntansi",
+          cta_title: "Siap Menjadi Bagian dari Revolusi Digital?",
+          cta_desc: "Jangan ragu untuk memulai langkahmu di Unika Soegijapranata. Konsultasikan minatmu sekarang juga.",
+          cta_btn_primary: "Daftar Mahasiswa Baru",
+          cta_btn_secondary: "Hubungi Kami",
+          contact_title: "Kontak Kami",
+          contact_desc: "Punya pertanyaan seputar pendaftaran, biaya, atau kurikulum? Tim kami siap membantu Anda.",
+          contact_address: "Alamat",
+          form_title: "Kirim Pesan",
+          form_name: "Nama Lengkap",
+          form_subject: "Subjek",
+          form_opt_1: "Pertanyaan Umum",
+          form_opt_2: "Info Pendaftaran",
+          form_opt_3: "Kerjasama",
+          form_msg: "Pesan",
+          form_btn: "Kirim Pesan",
+          footer_subtitle: "Program Studi Sistem Informasi",
+          // Detail Modal
+          btn_back: "Kembali ke Beranda",
+          modal_concentration: "KONSENTRASI",
+          modal_subjects: "Mata Kuliah Konsentrasi",
+          modal_career: "Prospek Karir",
+          sidebar_why: "Kenapa Memilih Ini?",
+          sidebar_point_1: "Kurikulum Internasional",
+          sidebar_point_2: "Sertifikasi Profesi",
+          sidebar_point_3: "Magang di Perusahaan Top",
+          sidebar_cta_title: "Tertarik Bergabung?",
+          sidebar_cta_desc: "Daftarkan dirimu segera dan dapatkan beasiswa potongan.",
+        },
+        en: {
+          nav_home: "Home",
+          nav_about: "About Us",
+          nav_programs: "Programs",
+          nav_lecturers: "Lecturers",
+          nav_contact: "Contact",
+          nav_register: "Register Now",
+          hero_title_1: "Digital",
+          hero_title_2: "Starts Here.",
+          hero_desc: "Join the SIEGA Unika Soegijapranata family. Achieve greatness and build a global career in the digital era.",
+          hero_cta_1: "Explore Programs",
+          hero_cta_2: "Ask Admin",
+          stat_accreditation: "Accreditation",
+          stat_concentration: "Concentrations",
+          stat_career: "Career Support",
+          about_tag: "About SIEGA",
+          about_title: "Creating Top Digital Talents",
+          about_desc_1: "SIEGA (Information Systems, E-Commerce, Game Technology, and Accounting + IS) is an integral part of the Faculty of Computer Science at Unika Soegijapranata focused on future tech innovation.",
+          about_desc_2: "We teach not just coding, but analytical thinking, creativity, and entrepreneurship. With 4 core concentrations constantly updated for industry needs, our graduates are ready to lead globally.",
+          about_point_1: "Project Based Learning (PBL)",
+          about_point_2: "Practitioner & Academic Lecturers",
+          about_point_3: "Modern & Immersive Labs",
+          programs_tag: "Study Programs",
+          programs_title: "4 Top Concentrations",
+          programs_desc: "Curriculum designed specifically to answer the challenges of today's digital industry.",
+          lecturers_tag: "Our Faculty",
+          lecturers_title: "Expert Lecturers & Practitioners",
+          lecturers_desc: "Learn directly from experts experienced in both academia and industry.",
+          card_highlight: "Course Highlights:",
+          btn_detail: "View Curriculum Details",
+          card_si_title: "Information Systems",
+          card_si_desc: "Produces graduates capable of analyzing, designing, and implementing business strategies based on information technology.",
+          card_si_pt1: "Business Intelligence (BI)",
+          card_si_pt2: "IS Audit",
+          card_si_pt3: "Immersive Tech",
+          card_game_title: "Game Technology",
+          card_game_desc: "Focuses on developing interactive game technology, simulations, Virtual Reality, and innovative Augmented Reality.",
+          card_game_pt1: "2D & 3D Animation",
+          card_game_pt2: "Artificial Intelligence (AI)",
+          card_game_pt3: "AR & VR",
+          card_ecom_title: "E-Commerce",
+          card_ecom_desc: "Molding digital entrepreneurs who master financial technology, digital marketing, and global online business management.",
+          card_ecom_pt1: "Cyber Law",
+          card_ecom_pt2: "Fintech",
+          card_ecom_pt3: "Metaverse & E-Marketplace",
+          card_akuntansi_title: "Accounting + IS",
+          card_akuntansi_desc: "Dual program combining financial accounting expertise with technical skills in information systems audit and data management.",
+          card_akuntansi_pt1: "Accounting IS",
+          card_akuntansi_pt2: "IT Audit",
+          card_akuntansi_pt3: "Computerized Accounting",
+          cta_title: "Ready to Join the Digital Revolution?",
+          cta_desc: "Don't hesitate to start your journey at Unika Soegijapranata. Consult your interests now.",
+          cta_btn_primary: "Register New Student",
+          cta_btn_secondary: "Contact Us",
+          contact_title: "Contact Us",
+          contact_desc: "Have questions about registration, fees, or curriculum? Our team is ready to help.",
+          contact_address: "Address",
+          form_title: "Send Message",
+          form_name: "Full Name",
+          form_subject: "Subject",
+          form_opt_1: "General Inquiry",
+          form_opt_2: "Registration Info",
+          form_opt_3: "Partnership",
+          form_msg: "Message",
+          form_btn: "Send Message",
+          footer_subtitle: "Information Systems Study Program",
+          btn_back: "Back to Home",
+          modal_concentration: "CONCENTRATION",
+          modal_subjects: "Concentration Courses",
+          modal_career: "Career Prospects",
+          sidebar_why: "Why Choose This?",
+          sidebar_point_1: "International Curriculum",
+          sidebar_point_2: "Professional Certification",
+          sidebar_point_3: "Internship at Top Firms",
+          sidebar_cta_title: "Interested in Joining?",
+          sidebar_cta_desc: "Register immediately and get scholarship discounts.",
+        },
+      };
+
+      // --- LANGUAGE LOGIC ---
+      let currentLang = localStorage.getItem("lang") || "id";
+      const langToggleBtn = document.getElementById("lang-toggle");
+      const langToggleMobileBtn = document.getElementById("lang-toggle-mobile");
+
+      function updateLanguage(lang) {
+        currentLang = lang;
+        localStorage.setItem("lang", lang);
+
+        // Update Button Text
+        const btnText = lang === "id" ? "EN" : "ID"; // Show option to switch to
+        langToggleBtn.textContent = lang.toUpperCase();
+        langToggleMobileBtn.textContent = lang.toUpperCase();
+
+        // Update Text Content
+        document.querySelectorAll("[data-i18n]").forEach((element) => {
+          const key = element.getAttribute("data-i18n");
+          if (translations[lang][key]) {
+            element.textContent = translations[lang][key];
+          }
+        });
+      }
+
+      // Initial Load
+      updateLanguage(currentLang);
+
+      // Toggle Listeners
+      function toggleLang() {
+        const newLang = currentLang === "id" ? "en" : "id";
+        updateLanguage(newLang);
+      }
+
+      langToggleBtn.addEventListener("click", toggleLang);
+      langToggleMobileBtn.addEventListener("click", toggleLang);
+
+      // --- THEME TOGGLE LOGIC ---
+      const themeToggleBtn = document.getElementById("theme-toggle");
+      const themeToggleMobileBtn = document.getElementById("theme-toggle-mobile");
+      const themeIcon = document.getElementById("theme-icon");
+      const themeIconMobile = document.getElementById("theme-icon-mobile");
+      const htmlElement = document.documentElement;
+
+      // Check saved preference
+      const savedTheme = localStorage.getItem("theme");
+      if (savedTheme === "dark" || (!savedTheme && window.matchMedia("(prefers-color-scheme: dark)").matches)) {
+        htmlElement.classList.add("dark");
+        updateIcon(true);
+      } else {
+        htmlElement.classList.remove("dark");
+        updateIcon(false);
+      }
+
+      function toggleTheme() {
+        htmlElement.classList.toggle("dark");
+        const isDark = htmlElement.classList.contains("dark");
+        localStorage.setItem("theme", isDark ? "dark" : "light");
+        updateIcon(isDark);
+      }
+
+      function updateIcon(isDark) {
+        if (isDark) {
+          themeIcon.classList.remove("fa-moon");
+          themeIcon.classList.add("fa-sun");
+          themeIconMobile.classList.remove("fa-moon");
+          themeIconMobile.classList.add("fa-sun");
+        } else {
+          themeIcon.classList.remove("fa-sun");
+          themeIcon.classList.add("fa-moon");
+          themeIconMobile.classList.remove("fa-sun");
+          themeIconMobile.classList.add("fa-moon");
+        }
+      }
+
+      themeToggleBtn.addEventListener("click", toggleTheme);
+      themeToggleMobileBtn.addEventListener("click", toggleTheme);
+
+      // --- DATA JURUSAN (UPDATED FOR BILINGUAL) ---
+      const prodiData = {
+        si: {
+          title: { id: "Sistem Informasi", en: "Information Systems" },
+          tag: { id: "Business Intelligence", en: "Business Intelligence" },
+          color: "blue",
+          image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+          desc: {
+            id: "Program studi ini menggabungkan ilmu komputer dengan manajemen bisnis. Mahasiswa akan belajar bagaimana teknologi dapat digunakan untuk memberikan nilai tambah bagi organisasi dan memenangkan persaingan bisnis.",
+            en: "This study program combines computer science with business management. Students will learn how technology can be used to provide added value to organizations and win business competition.",
+          },
+          subjects: {
+            id: [
+              "Manajemen Hubungan Pelanggan",
+              "Sistem Informasi Perusahaan",
+              "Kecerdasan Bisnis (Business Intelligence)",
+              "Teknologi Baru dan Inovasi Sistem Informasi",
+              "Analisa dan Perancangan Sistem Informasi",
+              "Perencanaan Sumber Daya Perusahaan (ERP)",
+              "Audit Sistem Informasi",
+              "Teknologi Immersive",
+            ],
+            en: [
+              "Customer Relationship Management",
+              "Enterprise Information Systems",
+              "Business Intelligence",
+              "New Technology & IS Innovation",
+              "Systems Analysis and Design",
+              "Enterprise Resource Planning (ERP)",
+              "Information Systems Audit",
+              "Immersive Technology",
+            ],
+          },
+          career: {
+            id: "Lulusan dapat berkarir sebagai IT Consultant, System Analyst, Business Intelligence Analyst, ERP Specialist, Database Administrator, hingga IT Project Manager di perusahaan multinasional maupun startup.",
+            en: "Graduates can pursue careers as IT Consultants, System Analysts, Business Intelligence Analysts, ERP Specialists, Database Administrators, to IT Project Managers in multinational companies or startups.",
+          },
+        },
+        game: {
+          title: { id: "Game Technology", en: "Game Technology" },
+          tag: { id: "Gamification & AR/VR", en: "Gamification & AR/VR" },
+          color: "purple",
+          image: "https://images.unsplash.com/photo-1552820728-8b83bb6b773f?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+          desc: {
+            id: "Fokus pada pengembangan sisi teknis dan kreatif dari sebuah game. Tidak hanya bermain, mahasiswa diajak menciptakan dunia virtual, simulasi interaktif, dan aplikasi berbasis Augmented/Virtual Reality.",
+            en: "Focuses on the technical and creative development of games. Beyond playing, students are invited to create virtual worlds, interactive simulations, and Augmented/Virtual Reality based applications.",
+          },
+          subjects: {
+            id: ["Animasi 2D & 3D", "Game Nirkabel (Mobile)", "Kecerdasan Buatan (AI)", "Antarmuka Game (UI/UX)", "Teknologi Game", "Pengembangan Game Online", "Deteksi Gerak (Motion Detection)", "Augmented Reality & Virtual Reality"],
+            en: ["2D & 3D Animation", "Mobile Games", "Artificial Intelligence (AI)", "Game Interface (UI/UX)", "Game Technology", "Online Game Development", "Motion Detection", "Augmented Reality & Virtual Reality"],
+          },
+          career: {
+            id: "Karir terbuka lebar sebagai Game Programmer, Game Designer, Level Designer, AR/VR Developer, Simulation Engineer, dan Technical Artist di industri kreatif yang sedang booming.",
+            en: "Wide open careers as Game Programmers, Game Designers, Level Designers, AR/VR Developers, Simulation Engineers, and Technical Artists in the booming creative industry.",
+          },
+        },
+        ecommerce: {
+          title: { id: "E-Commerce", en: "E-Commerce" },
+          tag: { id: "Digital Business", en: "Digital Business" },
+          color: "orange",
+          image: "https://images.unsplash.com/photo-1556740758-90de374c12ad?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+          desc: {
+            id: "Mempersiapkan mahasiswa untuk menjadi pemimpin di era ekonomi digital. Kurikulum mencakup aspek teknis pembangunan platform e-commerce serta strategi bisnis, pemasaran digital, dan hukum siber.",
+            en: "Preparing students to become leaders in the digital economy era. The curriculum covers technical aspects of building e-commerce platforms as well as business strategies, digital marketing, and cyber law.",
+          },
+          subjects: {
+            id: ["Hukum Cyber (Cyber Law)", "Manajemen Hubungan Pelanggan", "Perilaku Konsumen", "Perdagangan Internasional", "Teknologi Keuangan (Fintech)", "Pemasaran Digital dan Media Baru", "Keamanan Data", "Metaverse & E-Marketplace"],
+            en: ["Cyber Law", "Customer Relationship Management", "Consumer Behavior", "International Trade", "Financial Technology (Fintech)", "Digital Marketing & New Media", "Data Security", "Metaverse & E-Marketplace"],
+          },
+          career: {
+            id: "Lulusan sangat dicari sebagai Digital Marketing Manager, E-Commerce Specialist, Fintech Consultant, Social Media Strategist, hingga Founder Startup Digital.",
+            en: "Graduates are highly sought after as Digital Marketing Managers, E-Commerce Specialists, Fintech Consultants, Social Media Strategists, to Digital Startup Founders.",
+          },
+        },
+        akuntansi: {
+          title: { id: "Akuntansi + SI", en: "Accounting + IS" },
+          tag: { id: "Financial Tech", en: "Financial Tech" },
+          color: "emerald",
+          image: "https://images.unsplash.com/photo-1554224155-6726b3ff858f?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+          desc: {
+            id: "Program unik yang menjawab kebutuhan akan akuntan yang melek teknologi. Mahasiswa menguasai standar akuntansi keuangan sekaligus audit sistem informasi dan pengolahan data keuangan digital.",
+            en: "A unique program answering the need for tech-savvy accountants. Students master financial accounting standards as well as information systems audit and digital financial data processing.",
+          },
+          subjects: {
+            id: ["Sistem Informasi Akuntansi", "Audit Teknologi Informasi", "Komputerisasi Akuntansi", "Manajemen Keuangan Digital", "Analisis Laporan Keuangan", "Perpajakan & e-Faktur", "Etika Bisnis & Profesi", "Manajemen Risiko TI"],
+            en: ["Accounting Information Systems", "IT Audit", "Computerized Accounting", "Digital Financial Management", "Financial Statement Analysis", "Taxation & e-Invoicing", "Business & Professional Ethics", "IT Risk Management"],
+          },
+          career: {
+            id: "Profesi menjanjikan sebagai IT Auditor, Financial System Analyst, Digital Accountant, Risk Management Specialist, dan Konsultan Pajak Digital.",
+            en: "Promising professions as IT Auditors, Financial System Analysts, Digital Accountants, Risk Management Specialists, and Digital Tax Consultants.",
+          },
+        },
+      };
+
+      // --- NAVIGATION LOGIC ---
+
+      function showDetail(key) {
+        const data = prodiData[key];
+        if (!data) return;
+
+        // Determine current language text
+        const lang = currentLang;
+
+        // Update Content
+        document.getElementById("detail-title").textContent = data.title[lang];
+        // Added dark:text-white
+        document.getElementById("detail-title").className = `text-4xl md:text-5xl font-extrabold text-${data.color}-700 dark:text-${data.color}-400 mb-4`;
+
+        document.getElementById("detail-tag").textContent = data.tag[lang];
+        document.getElementById("detail-tag").className = `text-xs font-bold tracking-widest px-3 py-1 rounded bg-${data.color}-100 text-${data.color}-800 uppercase mb-4 inline-block`;
+
+        document.getElementById("detail-desc").textContent = data.desc[lang];
+        document.getElementById("detail-image").src = data.image;
+        document.getElementById("detail-career").textContent = data.career[lang];
+
+        // Update Subjects List
+        const listContainer = document.getElementById("detail-subjects");
+        listContainer.innerHTML = ""; // Clear old
+        data.subjects[lang].forEach((subject) => {
+          const item = document.createElement("div");
+          // Added dark:bg-gray-700 dark:border-gray-600
+          item.className = "flex items-center p-3 rounded-lg bg-gray-50 dark:bg-gray-700 border border-gray-100 dark:border-gray-600";
+          item.innerHTML = `<i class="fas fa-check-circle text-${data.color}-500 mr-3"></i><span class="text-gray-700 dark:text-gray-200 font-medium text-sm">${subject}</span>`;
+          listContainer.appendChild(item);
+        });
+
+        // Transition
+        document.getElementById("home-view").classList.add("hidden");
+        const detailView = document.getElementById("detail-view");
+        detailView.classList.remove("hidden");
+
+        // Scroll top
+        window.scrollTo({ top: 0, behavior: "smooth" });
+
+        // Adjust Navbar style for detail page (force solid)
+        const navbar = document.getElementById("navbar");
+        navbar.classList.add("glass-nav", "text-gray-800");
+        navbar.classList.remove("text-white", "bg-transparent");
+
+        // Handle dark mode text for navbar in detail view
+        if (document.documentElement.classList.contains("dark")) {
+          navbar.classList.add("text-gray-100");
+          navbar.classList.remove("text-gray-800");
+        }
+      }
+
+      function showHome() {
+        document.getElementById("detail-view").classList.add("hidden");
+        document.getElementById("home-view").classList.remove("hidden");
+
+        const navbar = document.getElementById("navbar");
+
+        // Check scroll position to reset navbar style if needed
+        if (window.scrollY <= 50) {
+          navbar.classList.remove("glass-nav", "text-gray-800", "shadow-md", "text-gray-100");
+          navbar.classList.add("text-white", "bg-transparent");
+        } else {
+          // Re-apply correct text color based on mode if scrolled
+          if (document.documentElement.classList.contains("dark")) {
+            navbar.classList.add("text-gray-100");
+            navbar.classList.remove("text-gray-800");
+          } else {
+            navbar.classList.add("text-gray-800");
+            navbar.classList.remove("text-gray-100");
+          }
+        }
+
+        // Scroll to top of Perkuliahan section roughly or top of page
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      }
+
+      // --- EXISTING LOGIC ---
+
+      // Navbar scroll effect & SCROLL SPY
+      const navbar = document.getElementById("navbar");
+      const navLinks = navbar.querySelectorAll(".nav-link");
+      const sections = document.querySelectorAll(".section-spy");
+
+      window.addEventListener("scroll", () => {
+        // Only apply scroll effect if we are in HOME view (detail view always has solid nav)
+        if (!document.getElementById("home-view").classList.contains("hidden")) {
+          const isDark = document.documentElement.classList.contains("dark");
+          const scrollY = window.scrollY;
+
+          // Navbar Style Change
+          if (scrollY > 50) {
+            navbar.classList.add("glass-nav");
+            navbar.classList.remove("text-white", "bg-transparent");
+            navbar.classList.add("shadow-md");
+
+            // Adjust text color based on mode
+            if (isDark) {
+              navbar.classList.add("text-gray-100");
+              navbar.classList.remove("text-gray-800");
+              navLinks.forEach((link) => {
+                link.classList.add("text-gray-100");
+                link.classList.remove("text-gray-800");
+              });
+            } else {
+              navbar.classList.add("text-gray-800");
+              navbar.classList.remove("text-gray-100");
+              navLinks.forEach((link) => {
+                link.classList.add("text-gray-800");
+                link.classList.remove("text-gray-100");
+              });
+            }
+          } else {
+            navbar.classList.remove("glass-nav", "text-gray-800", "text-gray-100", "shadow-md");
+            navbar.classList.add("text-white", "bg-transparent");
+            navLinks.forEach((link) => {
+              link.classList.remove("text-gray-800", "text-gray-100");
+            });
+          }
+
+          // Scroll Spy Logic
+          let current = "";
+          sections.forEach((section) => {
+            const sectionTop = section.offsetTop;
+            const sectionHeight = section.clientHeight;
+            if (scrollY >= sectionTop - 150) {
+              current = section.getAttribute("id");
+            }
+          });
+
+          navLinks.forEach((link) => {
+            link.classList.remove("nav-active");
+            if (link.getAttribute("href").includes(current)) {
+              link.classList.add("nav-active");
+            }
+          });
+        }
+      });
+
+      // Mobile Menu Toggle
+      const btn = document.getElementById("mobile-menu-btn");
+      const menu = document.getElementById("mobile-menu");
+
+      btn.addEventListener("click", () => {
+        menu.classList.toggle("hidden");
+        const icon = btn.querySelector("i");
+        const isDark = document.documentElement.classList.contains("dark");
+
+        if (menu.classList.contains("hidden")) {
+          icon.classList.remove("fa-times");
+          icon.classList.add("fa-bars");
+          if (window.scrollY <= 50 && !document.getElementById("home-view").classList.contains("hidden")) {
+            navbar.classList.remove("glass-nav", "text-gray-800", "text-gray-100");
+            navbar.classList.add("text-white");
+          }
+        } else {
+          icon.classList.remove("fa-bars");
+          icon.classList.add("fa-times");
+          navbar.classList.add("glass-nav");
+          navbar.classList.remove("text-white");
+
+          if (isDark) {
+            navbar.classList.add("text-gray-100");
+          } else {
+            navbar.classList.add("text-gray-800");
+          }
+        }
+      });
+
+      // Scroll Animation
+      const observerOptions = { root: null, rootMargin: "0px", threshold: 0.1 };
+      const observer = new IntersectionObserver((entries, observer) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("is-visible");
+            observer.unobserve(entry.target);
+          }
+        });
+      }, observerOptions);
+      document.querySelectorAll(".fade-in-section").forEach((section) => observer.observe(section));
+
+      // Form Handling (Fake Submit)
+      document.getElementById("contactForm").addEventListener("submit", function (e) {
+        e.preventDefault();
+
+        // Show Loader
+        const btnText = document.getElementById("btnText");
+        const btnLoader = document.getElementById("btnLoader");
+        const toast = document.getElementById("toast");
+        const toastMsg = document.getElementById("toast-msg");
+
+        btnText.textContent = currentLang === "id" ? "Mengirim..." : "Sending...";
+        btnLoader.classList.remove("hidden");
+
+        // Simulate API call
+        setTimeout(() => {
+          btnText.textContent = currentLang === "id" ? "Kirim Pesan" : "Send Message";
+          btnLoader.classList.add("hidden");
+          this.reset();
+
+          // Show Toast
+          toastMsg.textContent = currentLang === "id" ? "Pesan berhasil dikirim!" : "Message sent successfully!";
+          toast.classList.add("show");
+          setTimeout(() => {
+            toast.classList.remove("show");
+          }, 3000);
+        }, 1500);
+      });
+    </script>
   </body>
 </html>
